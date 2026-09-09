@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nouvelle intervention — Serrurier du Ventoux</title>
+<style>
+:root{--blue:#244b63;--blue-dark:#1d3f53;--bg:#f4ecdf;--card:#fffdf9;--text:#26343b;--muted:#6d6a63;--border:#ded4c6;--green:#6fa44b;--zone2:#1695c9;--zone3:#f2b72b;--zone4:#f28c18;--zone5:#d93d36;--estimate:#244b63}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Inter,Arial,sans-serif;color:var(--text)}
+.wrap{max-width:820px;margin:0 auto;padding:28px 15px 60px}.head{display:flex;justify-content:center;align-items:center;margin-bottom:18px}.logo-head{padding:2px 0 4px}.site-logo{display:block;width:300px;max-width:70vw;height:auto}
+.brand{font-weight:900;color:var(--blue);letter-spacing:.5px;font-size:18px}.brand small{display:block;font-weight:500;color:var(--muted);margin-top:4px;font-size:12px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:21px;box-shadow:0 4px 14px rgba(73,56,35,.07);margin-bottom:15px}
+h1{font-size:25px;margin:0;color:var(--blue);letter-spacing:-.2px}h2{font-size:16px;margin:0 0 14px;color:var(--blue);font-weight:900}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.full{grid-column:1/-1}
+label{font-size:13px;font-weight:700;display:block;margin-bottom:6px}.req{color:#d93025;font-weight:900}.legend{font-size:12px;color:var(--muted);margin:-5px 0 14px}.invalid{border-color:#d93025!important;box-shadow:0 0 0 2px #d9302514}.error-box{display:none;background:#fff1f0;border:1px solid #f1b7b3;color:#8a1c16;padding:12px;border-radius:10px;margin-bottom:12px}.error-box ul{margin:6px 0 0 18px;padding:0}input,select,textarea{width:100%;border:1px solid var(--border);border-radius:8px;padding:11px;font-size:15px;background:#fffdfb;color:var(--text)}textarea{min-height:70px;resize:vertical}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:9px}.choice{border:1px solid var(--border);border-radius:10px;padding:11px;background:#fafcfd;cursor:pointer}.choice input{width:auto;margin-right:8px}
+.hidden{display:none}.row{display:flex;justify-content:space-between;align-items:center;gap:12px}.summary{background:#f7f1e7;border:1px solid #e4d8c8;border-radius:12px;padding:0;overflow:hidden}.line{display:flex;justify-content:space-between;gap:18px;padding:9px 14px;border-bottom:1px solid #e6ddd0}.total{font-size:19px;font-weight:900;color:#fff;background:var(--estimate);border:0;margin:0;padding:14px}
+.btn{border:0;border-radius:9px;padding:13px 18px;font-weight:800;cursor:pointer}.primary{background:var(--blue);color:#fff;box-shadow:0 3px 8px rgba(36,75,99,.18)}
+.notice{font-size:12px;color:var(--muted);line-height:1.5}.ok{display:none;background:#edf7f0;border:1px solid #cfe6d5;padding:14px;border-radius:10px;color:#245b32;margin-top:12px}
+.map{width:100%;display:block;border-radius:10px;border:1px solid var(--border);margin-bottom:12px}
+.zone-buttons{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.zone-btn{border:0;border-radius:10px;padding:13px 7px;cursor:pointer;font-size:13px;font-weight:800;color:#fff;box-shadow:0 2px 5px #00000012}.zone-btn.active{outline:3px solid #1d2930;outline-offset:2px}
+.z1{background:var(--green)}.z2{background:var(--zone2)}.z3{background:var(--zone3);color:#fff}.z4{background:var(--zone4)}.z5{background:var(--zone5)}
+.sig-wrap{border:1px solid var(--border);border-radius:12px;padding:10px;background:#fafcfd}.sig{width:100%;height:160px;background:#fff;border:1px dashed #9eabb2;border-radius:9px;display:block;touch-action:none}.sig-actions{display:flex;justify-content:flex-end;margin-top:7px}.smallbtn{border:0;background:#e9eef1;color:var(--blue);padding:7px 10px;border-radius:8px;cursor:pointer;font-weight:700}
+.pill{display:inline-block;background:#eaf0f3;color:var(--blue);padding:5px 8px;border-radius:20px;font-size:12px;font-weight:800}.summary-title{background:var(--estimate);color:#fff;padding:12px 14px;font-size:13px;font-weight:900;letter-spacing:.4px;text-transform:uppercase}.summary-title small{display:block;font-size:11px;font-weight:500;opacity:.82;text-transform:none;letter-spacing:0;margin-top:2px}
+@media(max-width:650px){.grid,.choices{grid-template-columns:1fr}.zone-buttons{grid-template-columns:1fr 1fr}.wrap{padding:13px 10px 40px}.card{padding:17px}}
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&display=swap');
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <div class="head logo-head">
+    <img class="site-logo" src="logo-serrurier-du-ventoux.png" alt="Serrurier du Ventoux">
+  </div>
+
+  <div class="card">
+    <h2>1 · Client</h2>
+    <div class="legend"><span class="req">*</span> Zone obligatoire</div>
+    <div class="grid" id="particulierBloc">
+      <div><label>Nom <span class="req">*</span></label><input id="nom"></div>
+      <div><label>Prénom <span class="req">*</span></label><input id="prenom"></div>
+      <div class="full"><label>Adresse <span class="req">*</span></label><input id="adresse"></div>
+      <div><label>Code postal <span class="req">*</span></label><input id="cp"></div>
+      <div><label>Ville <span class="req">*</span></label><input id="ville"></div>
+      <div><label>Téléphone <span class="req">*</span></label><input id="tel"></div>
+      <div><label>Email <span class="req">*</span></label><input id="email"></div>
+    </div>
+    <div style="margin-top:14px">
+      <label>Client professionnel ? <span class="req">*</span></label>
+      <div class="choices">
+        <label class="choice"><input type="radio" name="pro" value="non" checked> Non</label>
+        <label class="choice"><input type="radio" name="pro" value="oui"> Oui</label>
+      </div>
+    </div>
+    <div class="grid hidden" id="proBloc" style="margin-top:14px">
+      <div class="full"><label>Raison sociale <span class="req">*</span></label><input id="raisonSociale" placeholder="Nom de l'entreprise"></div>
+      <div><label>SIRET <span class="req">*</span></label><input id="siret" inputmode="numeric" placeholder="14 chiffres"></div>
+      <div><label>Téléphone professionnel</label><input id="proTel"></div>
+      <div class="full"><label>Adresse professionnelle <span class="req">*</span></label><input id="proAdresse"></div>
+      <div><label>Code postal <span class="req">*</span></label><input id="proCp"></div>
+      <div><label>Ville <span class="req">*</span></label><input id="proVille"></div>
+      <div class="full"><label>Email professionnel</label><input id="proEmail"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>2 · Situation du client</h2>
+    <div class="choices">
+      <label class="choice"><input type="radio" name="situation" value="claquee" checked> Porte claquée</label>
+      <label class="choice"><input type="radio" name="situation" value="perdue"> Clés perdues</label>
+      <label class="choice"><input type="radio" name="situation" value="volee"> Clés volées</label>
+      <label class="choice"><input type="radio" name="situation" value="cassee"> Clé cassée</label>
+      <label class="choice"><input type="radio" name="situation" value="cylindre"> Cylindre défectueux</label>
+      <label class="choice"><input type="radio" name="situation" value="serrure"> Serrure défectueuse</label>
+      <label class="choice"><input type="radio" name="situation" value="effraction"> Effraction</label>
+      <label class="choice"><input type="radio" name="situation" value="autre"> Autre</label>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>3 · Intervention</h2>
+    <label>Adresse d'intervention</label>
+    <input id="lieu">
+
+    <div class="grid" style="margin-top:16px">
+      <div>
+        <label>Jour d'intervention</label>
+        <select id="jour">
+          <option value="semaine" selected>Lundi à vendredi</option>
+          <option value="samedi">Samedi</option>
+          <option value="dimanche">Dimanche</option>
+        </select>
+      </div>
+      <div>
+        <label>Jour férié ?</label>
+        <select id="ferie">
+          <option value="non" selected>Non</option>
+          <option value="oui">Oui (+50 %)</option>
+        </select>
+      </div>
+      <div class="full">
+        <label>Horaire d'intervention</label>
+        <select id="horaire">
+          <option value="7-12" selected>07h–12h</option>
+          <option value="12-14">12h–14h</option>
+          <option value="14-19">14h–19h</option>
+          <option value="19-22">19h–22h</option>
+          <option value="22-00">22h–00h</option>
+          <option value="00-7">00h–07h</option>
+        </select>
+      </div>
+    </div>
+
+    <label style="margin-top:16px">Zone de déplacement</label>
+    <img class="map" src="carte-zones-deplacement.png">
+    <div class="zone-buttons">
+      <button class="zone-btn z1" data-zone="25">Zone 1</button>
+      <button class="zone-btn z2" data-zone="33">Zone 2</button>
+      <button class="zone-btn z3" data-zone="41">Zone 3</button>
+      <button class="zone-btn z4" data-zone="52">Zone 4</button>
+      <button class="zone-btn z5" data-zone="73">Zone 5</button>
+    </div>
+
+    <div id="cylBloc" class="hidden" style="margin-top:14px">
+      <label>Pièce proposée</label>
+      <select id="cylindre">
+        <option value="0">Aucun remplacement</option>
+        <option value="40">Cylindre standard · 40,00 € HT</option>
+        <option value="75">Cylindre renforcé · 75,00 € HT</option>
+        <option value="110">Cylindre haute sécurité · 110,00 € HT</option>
+      </select>
+    </div>
+
+  </div>
+
+  <div class="card">
+    <h2>4 · Mentions et choix du client</h2>
+    <label class="choice"><input type="checkbox" id="immediate" checked> Demande expresse d’intervention immédiate : le client demande l’intervention sans attendre le délai de rétractation habituel de 14 jours.</label>
+    <label class="choice"><input type="checkbox" id="take"> Le client ne souhaite pas conserver les pièces remplacées et autorise leur emport</label>
+    <label class="choice"><input type="checkbox" id="garantie"> Le client reconnaît avoir pris connaissance de la durée de garantie applicable aux pièces remplacées, indiquée sur le devis et la facture</label>
+    <div id="tvaCertBloc" class="hidden" style="margin-top:12px">
+      <label class="choice"><input type="checkbox" id="certifTVA10"> Je certifie que le logement est achevé depuis plus de deux ans et que les travaux concernés remplissent les conditions d’application du taux réduit de TVA.</label>
+    </div>
+    <div style="margin-top:12px"><label>Mention à saisir <span style="font-weight:500;color:#66747d">(écrire « Lu et approuvé »)</span></label><input id="lu" placeholder="Lu et approuvé"></div>
+    <div style="margin-top:12px">
+      <label>Signature du client</label>
+      <div class="sig-wrap">
+        <canvas id="sig" class="sig"></canvas>
+        <div class="sig-actions"><button class="smallbtn" id="clearSig">Effacer la signature</button></div>
+      </div>
+      <div class="notice" style="margin-top:5px">Signer directement dans le cadre avec le doigt ou un stylet.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>5 · Aperçu</h2>
+    <div class="summary">
+      <div class="summary-title">Estimation <small>Montant indicatif selon les informations saisies</small></div>
+      <div class="line"><span>Forfait d’intervention</span><strong id="m">—</strong></div>
+      <div class="line"><span>Majoration</span><strong id="majLabel">—</strong></div>
+      <div class="line"><span>Déplacement — <span id="zoneName">—</span></span><strong id="z">—</strong></div>
+      <div class="line hidden" id="cLine"><span id="cLabel"></span><strong id="c"></strong></div>
+      <div class="line"><span>Total HT</span><strong id="ht">—</strong></div>
+      <div class="line"><span>TVA</span><strong id="tva">—</strong></div>
+      <div class="line total"><span>Total TTC</span><strong id="ttc">—</strong></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div id="errors" class="error-box"></div>
+    <div class="row">
+      <div><strong>Tout est rempli ?</strong><div class="notice">Validez pour préparer le devis.</div></div>
+      <button class="btn primary" onclick="generate()">Générer les PDF</button>
+    </div>
+    <div id="ok" class="ok">✓ Le devis PDF a été généré.</div>
+  </div>
+</div>
+
+<script>
+const euro=n=>n.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
+const zoneNames={25:'Zone 1',33:'Zone 2',41:'Zone 3',52:'Zone 4',73:'Zone 5'};
+let zone=25;
+function situationData(){
+ const s=document.querySelector('input[name="situation"]:checked').value;
+ return {
+  claquee:{label:'Porte claquée',hours:'1 h',m:75, c:false, reason:"Ouverture d'une porte claquée"},
+  perdue:{label:'Clés perdues',hours:'1 h',m:75,c:false,reason:"Intervention consécutive à une perte de clés"},
+  volee:{label:'Clés volées',hours:'1 h',m:75,c:true,reason:"Intervention consécutive à un vol de clés"},
+  cassee:{label:'Clé cassée',hours:'1 h',m:75,c:false,reason:"Intervention consécutive à une clé cassée"},
+  cylindre:{label:'Cylindre défectueux',hours:'1 h',m:75,c:true,reason:"Remplacement / intervention sur cylindre défectueux"},
+  serrure:{label:'Serrure défectueuse',hours:'1 h',m:75,c:true,reason:"Intervention sur serrure défectueuse"},
+  effraction:{label:'Effraction',hours:'1 h 30',m:112.5,c:true,reason:"Intervention consécutive à une effraction"},
+  autre:{label:'Autre',hours:'1 h',m:75,c:false,reason:"Intervention — autre demande"}
+ }[s];
+}
+function situation(){
+ const d=situationData();
+ const select=document.getElementById('cylindre');
+ const bloc=document.getElementById('cylBloc');
+ bloc.classList.toggle('hidden',!d.c);
+ if(d.c){
+   if(document.querySelector('input[name="situation"]:checked').value==='serrure'){
+     select.innerHTML='<option value="90">Serrure défectueuse · 90,00 € HT</option>';
+     select.value='90';
+   } else {
+     select.innerHTML='<option value="40">Cylindre standard · 40,00 € HT</option><option value="75">Cylindre renforcé · 75,00 € HT</option><option value="110">Cylindre haute sécurité · 110,00 € HT</option>';
+     select.value='40';
+   }
+ } else {
+   select.innerHTML='<option value="0" selected>—</option>';
+   select.value='0';
+ }
+ updateMajLabel();
+ calc();
+}
+
+function resetPreview(){
+ document.getElementById('m').textContent='—';
+ document.getElementById('majLabel').textContent='—';
+ document.getElementById('z').textContent='—';
+ document.getElementById('zoneName').textContent='—';
+ document.getElementById('ht').textContent='—';
+ document.getElementById('tva').textContent='—';
+ document.getElementById('ttc').textContent='—';
+ document.getElementById('cLine').classList.add('hidden'); document.getElementById('cLine').style.display='none';
+}
+function isPro(){ const el=document.querySelector('input[name="pro"]:checked'); return !!el && el.value==='oui'; }
+function logementPlus2(){ return document.getElementById('certifTVA10').checked; }
+const majorations={
+ semaine:{'7-12':0,'12-14':0.20,'14-19':0,'19-22':0.40,'22-00':1,'00-7':1},
+ samedi:{'7-12':0.75,'12-14':0.95,'14-19':0.75,'19-22':1.15,'22-00':1.75,'00-7':1.75},
+ dimanche:{'7-12':1,'12-14':1.20,'14-19':1,'19-22':1.40,'22-00':2,'00-7':2}
+};
+function majorationActuelle(){
+ const jour=document.getElementById('jour').value;
+ const horaire=document.getElementById('horaire').value;
+ const majJourHoraire=(jour && horaire && majorations[jour] && majorations[jour][horaire]) ? majorations[jour][horaire] : 0;
+ const majFerie=document.getElementById('ferie').value==='oui' ? 0.50 : 0;
+ return majJourHoraire + majFerie;
+}
+function updateMajLabel(){
+ const jour=document.getElementById('jour').value, horaire=document.getElementById('horaire').value;
+ if(!jour || !horaire){ document.getElementById('majLabel').textContent='—'; return; }
+ const m=majorationActuelle();
+ document.getElementById('majLabel').textContent=document.getElementById('horaire').selectedOptions[0].textContent+' · '+(m*100).toFixed(0)+' %';
+}
+function calc(){
+ const checked=document.querySelector('input[name="situation"]:checked');
+ if(!checked){resetPreview();return;}
+ const d=situationData(),c=+document.getElementById('cylindre').value;
+ const pro=isPro(), plus2=logementPlus2();
+ const maj=majorationActuelle();
+ const mainHT=d.m*(1+maj);
+ const cLine=document.getElementById('cLine'); cLine.classList.toggle('hidden',c<=0); cLine.style.display=c>0?'flex':'none';
+ document.getElementById('cLabel').textContent=document.getElementById('cylindre').selectedOptions[0].textContent.split(' · ')[0];
+ document.getElementById('m').textContent=euro(mainHT)+' HT';
+ document.getElementById('z').textContent=zone==null?'—':euro(zone)+' HT';
+ document.getElementById('zoneName').textContent=zone==null?'—':zoneNames[zone];
+ document.getElementById('c').textContent=euro(c)+' HT';
+ const tauxDeplacement=(!pro && plus2)?0.10:0.20;
+ const tauxTravaux=0.20;
+ const htTravaux=mainHT+c, tvaTravaux=htTravaux*tauxTravaux;
+ const z=zone==null?0:zone; const tvaDeplacement=z*tauxDeplacement, ht=htTravaux+z, tva=tvaTravaux+tvaDeplacement, ttc=ht+tva;
+ document.getElementById('ht').textContent=euro(ht);
+ document.getElementById('tva').textContent=euro(tva);
+ document.getElementById('ttc').textContent=euro(ttc);
+ const cert=document.getElementById('tvaCertBloc'); if(cert) cert.classList.toggle('hidden', pro);
+}
+
+document.querySelectorAll('input[name="situation"]').forEach(x=>x.addEventListener('change',situation));
+document.getElementById('cylindre').addEventListener('change',calc);
+document.querySelectorAll('input[name="pro"]').forEach(x=>x.addEventListener('change',()=>{ const pro=isPro(); document.getElementById('particulierBloc').classList.toggle('hidden',pro); document.getElementById('proBloc').classList.toggle('hidden',!pro); calc();}));
+['jour','ferie','horaire','certifTVA10'].forEach(id=>document.getElementById(id).addEventListener('change',()=>{updateMajLabel();calc();}));
+document.querySelectorAll('.zone-btn').forEach(btn=>btn.addEventListener('click',()=>{zone=+btn.dataset.zone;document.querySelectorAll('.zone-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');calc();}));
+function syncAddressOnce(){document.getElementById('lieu').value=[document.getElementById('adresse').value,document.getElementById('cp').value,document.getElementById('ville').value].filter(Boolean).join(', ')}
+['adresse','cp','ville'].forEach(id=>document.getElementById(id).addEventListener('change',syncAddressOnce));
+['proAdresse','proCp','proVille'].forEach(id=>document.getElementById(id).addEventListener('change',()=>{ if(isPro()){} }));
+const canvas=document.getElementById('sig'),ctx=canvas.getContext('2d');let drawing=false;
+function resizeCanvas(){const r=canvas.getBoundingClientRect(),ratio=window.devicePixelRatio||1;canvas.width=r.width*ratio;canvas.height=r.height*ratio;ctx.setTransform(ratio,0,0,ratio,0,0);ctx.lineWidth=2;ctx.lineCap='round';ctx.lineJoin='round'}
+resizeCanvas();window.addEventListener('resize',resizeCanvas);
+function pos(e){const r=canvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}}
+canvas.addEventListener('pointerdown',e=>{drawing=true;canvas.setPointerCapture(e.pointerId);const p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y)});
+canvas.addEventListener('pointermove',e=>{if(!drawing)return;const p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke()});
+canvas.addEventListener('pointerup',()=>drawing=false);canvas.addEventListener('pointercancel',()=>drawing=false);
+document.getElementById('clearSig').onclick=()=>ctx.clearRect(0,0,canvas.width,canvas.height);
+function pdfText(doc,text,x,y,maxWidth,lineHeight=5){const lines=doc.splitTextToSize(String(text||''),maxWidth);doc.text(lines,x,y);return y+lines.length*lineHeight;}
+function nextNumber(type){const key='sdv_'+type+'_number';let n=parseInt(localStorage.getItem(key)||'0',10)+1;localStorage.setItem(key,String(n));return type+'-'+new Date().getFullYear()+'-'+String(n).padStart(4,'0');}
+function cleanFile(s){return String(s||'client').replace(/[^a-z0-9àâäéèêëîïôöùûüç_-]+/gi,'_').replace(/^_+|_+$/g,'');}
+
+function sameInterventionAddress(){
+  const parts = [
+    document.getElementById('adresse')?.value.trim().toLowerCase(),
+    document.getElementById('cp')?.value.trim().toLowerCase(),
+    document.getElementById('ville')?.value.trim().toLowerCase()
+  ];
+  const intervention = document.getElementById('adresseIntervention')?.value.trim().toLowerCase();
+  if(!intervention) return false;
+  return intervention === parts[0] && parts[0] && parts[1] && parts[2];
+}
+
+function pdfEnsureSpace(doc, y, needed=10){
+  if(y + needed > 275){
+    doc.addPage();
+    return 18;
+  }
+  return y;
+}
+
+function getSignatureData(){
+  const canvas = document.getElementById('sig');
+  if(!canvas) return null;
+  try{
+    const ctx = canvas.getContext('2d');
+    const pixels = ctx.getImageData(0,0,canvas.width,canvas.height).data;
+    let ink=false;
+    for(let i=3;i<pixels.length;i+=4){
+      if(pixels[i] > 10){ ink=true; break; }
+    }
+    return ink ? canvas.toDataURL('image/png') : null;
+  }catch(e){
+    return null;
+  }
+}
+
+function buildPdf(type){
+ const {jsPDF}=window.jspdf; const doc=new jsPDF({unit:'mm',format:'a4'});
+ const d=situationData(), c=+document.getElementById('cylindre').value;
+ const pro=isPro(), plus2=logementPlus2(), maj=majorationActuelle();
+ const mainHT=d.m*(1+maj), tauxDeplacement=(!pro && plus2)?0.10:0.20, tauxTravaux=0.20;
+ const htTravaux=mainHT+c, ht=htTravaux+zone, tvaTravaux=htTravaux*tauxTravaux, tvaDeplacement=zone*tauxDeplacement, tva=tvaTravaux+tvaDeplacement, ttc=ht+tva;
+ const nom=[document.getElementById('prenom').value,document.getElementById('nom').value].filter(Boolean).join(' ');
+ const clientPro=pro ? (document.getElementById('raisonSociale').value||'Entreprise') : '';
+ const adresseClient=pro ? [document.getElementById('proAdresse').value,document.getElementById('proCp').value,document.getElementById('proVille').value].filter(Boolean).join(', ') : [document.getElementById('adresse').value,document.getElementById('cp').value,document.getElementById('ville').value].filter(Boolean).join(', ');
+ const numero=nextNumber(type==='devis'?'DEV':'FAC'); const date=new Date().toLocaleDateString('fr-FR');
+ const logoEl=document.querySelector('.site-logo');
+ if(logoEl && logoEl.complete) doc.addImage(logoEl,'PNG',15,10,58,45);
+ doc.setFont('helvetica','normal');doc.setFontSize(9);doc.text('Serrurerie - dépannage',15,59);doc.text('SIRET : [À COMPLÉTER]',15,64);doc.text('Tél. : 06 60 63 33 46',15,69);
+ doc.setFont('helvetica','bold');doc.setFontSize(16);doc.text(type==='devis'?'DEVIS':'FACTURE',195,18,{align:'right'});
+ doc.setFont('helvetica','normal');doc.setFontSize(9);doc.text('N° '+numero,195,24,{align:'right'});doc.text('Date : '+date,195,29,{align:'right'});
+ doc.setDrawColor(210,220,225);doc.line(15,74,195,74);
+ doc.setFont('helvetica','bold');doc.setFontSize(10);doc.text('CLIENT',15,83);doc.setFont('helvetica','normal');
+ if(clientPro) doc.text(clientPro,15,89);
+ doc.text(nom||'[Nom du client]',15,clientPro?94:89);
+  if(pro) doc.text('SIRET : '+(document.getElementById('siret').value||'-'),15,99);
+ const contactTel=pro?(document.getElementById('proTel').value||''):(document.getElementById('tel').value||''); const contactEmail=pro?(document.getElementById('proEmail').value||''):(document.getElementById('email').value||''); let y=clientPro?104:94;y=pdfText(doc,adresseClient||'[Adresse du client]',15,y,80,5);if(contactTel)doc.text('Tél. : '+contactTel,15,y+1);if(contactEmail)doc.text('Email : '+contactEmail,15,y+6);
+ doc.setFont('helvetica','bold');doc.text("ADRESSE D'INTERVENTION",115,83);doc.setFont('helvetica','normal');pdfText(doc,document.getElementById('lieu').value||adresseClient||'-',115,89,80,5);
+ let ty=118;doc.setFont('helvetica','bold');doc.text('DÉTAIL DE L’INTERVENTION',15,ty);ty+=7;
+ const rows=[['Intervention - '+d.label,mainHT,d.hours],['Déplacement - '+zoneNames[zone],zone,''],];if(c>0)rows.push([document.getElementById('cylindre').selectedOptions[0].textContent.split(' · ')[0],c,'']);
+ doc.setFontSize(9);doc.setFont('helvetica','bold');doc.text('Désignation',15,ty);doc.text('Qté / durée',125,ty);doc.text('Montant HT',195,ty,{align:'right'});ty+=4;doc.setFont('helvetica','normal');
+ rows.forEach(r=>{doc.line(15,ty,195,ty);ty+=6;doc.text(r[0],15,ty);doc.text(r[2]||'1',125,ty);doc.text(euro(r[1]).replace(' €',''),195,ty,{align:'right'});ty+=2;});
+ doc.line(15,ty,195,ty);ty+=10;doc.setFont('helvetica','bold');doc.text('Total HT',145,ty);doc.text(euro(ht),195,ty,{align:'right'});ty+=6;doc.text('TVA',145,ty);doc.text(euro(tva),195,ty,{align:'right'});ty+=7;doc.setFontSize(12);doc.text('TOTAL TTC',145,ty);doc.text(euro(ttc),195,ty,{align:'right'});
+ ty+=12;doc.setFontSize(9);doc.setFont('helvetica','bold');doc.text('Détails de l’intervention',15,ty);doc.setFont('helvetica','normal');ty+=5;ty=pdfText(doc,'Motif : '+d.reason,15,ty,180,5);let detailsIntervention='Horaire : '+document.getElementById('horaire').selectedOptions[0].textContent+' · Majoration : '+(maj*100).toFixed(0)+' %';
+ if(document.getElementById('jour').value==='samedi') detailsIntervention='Jour : Samedi · '+detailsIntervention;
+ if(document.getElementById('jour').value==='dimanche') detailsIntervention='Jour : Dimanche · '+detailsIntervention;
+ if(document.getElementById('ferie').value==='oui') detailsIntervention+=' · Jour férié';
+ ty=pdfText(doc,detailsIntervention,15,ty,180,5);
+ ty=pdfText(doc,zoneNames[zone]+' · Déplacement : '+euro(zone)+' HT',15,ty,180,5);
+ ty+=6;doc.setFont('helvetica','bold');doc.text('Mentions',15,ty);doc.setFont('helvetica','normal');ty+=5;
+ ty=pdfText(doc,'TVA main-d’œuvre / fournitures : 20 % · TVA déplacement : '+(tauxDeplacement*100).toFixed(0)+' %',15,ty,180,5);
+ if(!pro && plus2 && document.getElementById('certifTVA10').checked) ty=pdfText(doc,'Certification TVA : le client certifie que le logement est achevé depuis plus de deux ans et que les travaux concernés remplissent les conditions d’application du taux réduit.',15,ty,180,5);
+ ty=pdfText(doc,'Demande expresse d’intervention immédiate : '+(document.getElementById('immediate').checked?'Oui — le client demande l’intervention sans attendre le délai de rétractation habituel de 14 jours.':'Non'),15,ty,180,5);
+ ty=pdfText(doc,'Garantie des pièces remplacées : '+(document.getElementById('garantie').checked?'le client reconnaît avoir pris connaissance de la durée applicable indiquée sur le devis et la facture':'non cochée'),15,ty,180,5);
+ ty=pdfText(doc,'Pièces remplacées : '+(document.getElementById('take').checked?'le client ne souhaite pas les conserver et autorise leur emport':'conservées par le client'),15,ty,180,5);
+ ty=pdfEnsureSpace(doc,ty,55);
+ doc.setFont('helvetica','bold');doc.text('Validation du client',15,ty);ty+=8;
+ doc.setFont('helvetica','normal');doc.text('Date : '+date,15,ty);ty+=9;
+
+ const mention=document.getElementById('lu').value;
+ if(mention){
+   const mc=document.createElement('canvas');mc.width=900;mc.height=130;
+   const mx=mc.getContext('2d');mx.clearRect(0,0,mc.width,mc.height);
+   mx.fillStyle='#111';mx.font='48px Caveat, cursive';mx.textBaseline='middle';
+   mx.fillText(mention,10,65);
+   doc.addImage(mc.toDataURL('image/png'),'PNG',15,ty-6,75,11);
+   ty+=17;
+ }
+
+ const sigData=getSignatureData();
+ if(sigData){
+   ty=pdfEnsureSpace(doc,ty,38);
+   doc.setFont('helvetica','bold');doc.text('Signature du client',15,ty);ty+=4;
+   doc.addImage(sigData,'PNG',15,ty,80,32);
+   ty+=40;
+ }
+doc.save('Devis_Serrurier_du_Ventoux_'+numero+'.pdf');
+  document.getElementById('ok').textContent='✓ Le devis PDF a été généré.';
+}
+
+document.getElementById('particulierBloc').classList.remove('hidden'); document.getElementById('proBloc').classList.add('hidden'); document.querySelector('.zone-btn[data-zone="25"]').classList.add('active'); situation();
+</script>
+</body>
+</html>
